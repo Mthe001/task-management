@@ -17,13 +17,32 @@ export const imageUpload = async (imageData) => {
 
 export const saveUser = async (user) => {
     try {
-        await axios.post(`http://localhost:5000/users/${user?.email}`, {
-            name: user?.displayName,
-            email: user?.email,
-            image: user?.photoURL,
+        const response = await axios.post("http://localhost:5000/users", {
+            email: user?.email,      // Email
+            name: user?.displayName, // Name
+            image: user?.photoURL,   // Image URL
+            location: user?.location,  // Location (optional)
+            description: user?.description,  // Description (optional)
         });
 
+        console.log(response.data); // Handle success response here
     } catch (error) {
-        console.log(error);
+        console.log("Error saving user:", error?.response?.data || error?.message);
     }
-}
+};
+
+export const updateUser = async (user) => {
+    try {
+        const response = await axios.put("http://localhost:5000/users", {
+            email: user?.email,      // Email
+            name: user?.displayName, // Name
+            image: user?.photoURL,   // Image URL
+            location: user?.location,  // Location (optional)
+            description: user?.description,  // Description (optional)
+        });
+
+        console.log(response.data); // Handle success response here
+    } catch (error) {
+        console.log("Error updating user:", error?.response?.data || error?.message);
+    }
+};

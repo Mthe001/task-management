@@ -4,6 +4,11 @@ import Home from "@/pages/Home/Home";
 import Login from "@/pages/Login/Login";
 
 import { createBrowserRouter } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
+import AddTask from "@/components/addTask/AddTask";
+import Register from "@/pages/Register/Register";
+import Profile from "@/pages/ProfilePage/UserProfile";
+
 
 
 const router = createBrowserRouter([
@@ -20,10 +25,19 @@ const router = createBrowserRouter([
                 path: "/login",
                 element: <Login></Login>
             },
-            // {
-            //     path: "/register",
-            //     element:<Regsiter/>
-            // },
+            {
+                path:'/register',
+                element:<Register/>,
+            },
+            {
+                path:'/profile',
+                element:<PrivateRoute><Profile/></PrivateRoute>,
+            },
+            {
+                path:'/add-task',
+                element:<PrivateRoute><AddTask/></PrivateRoute>,
+            },
+             
            
 
         ]

@@ -119,8 +119,8 @@ const Navbar = () => {
                                             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
                                             onClick={toggleDropdown} // Close modal on background click
                                         >
-                                            <div className="bg-background fixed right-[70px]  top-[55px] border-2 rounded-lg p-6 shadow-lg w-44" onClick={(e) => e.stopPropagation()}>
-                                                <p className="text-lg font-semibold">User Menu</p>
+                                            <div className="bg-background fixed right-[70px] top-[55px] border-2 rounded-lg p-6 shadow-lg w-44" onClick={(e) => e.stopPropagation()}>
+                                                <p className="text-lg font-semibold">{user.displayName || 'User Menu'}</p> {/* Display dynamic user name */}
                                                 <NavLink to="/profile" className="block text-gray-800 hover:text-primary py-2 px-4 rounded">
                                                     Profile
                                                 </NavLink>
@@ -138,9 +138,6 @@ const Navbar = () => {
                                     )}
                                 </AnimatePresence>
                             </div>
-
-
-
                         ) : (
                             <>
                                 {/* Login Icon */}
@@ -161,6 +158,7 @@ const Navbar = () => {
                             </>
                         )}
                     </div>
+
 
 
 
