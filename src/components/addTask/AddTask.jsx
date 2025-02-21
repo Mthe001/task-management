@@ -6,15 +6,14 @@ import useAuth from "@/hooks/useAuth";
 
 const AddTask = () => {
     const { register, handleSubmit, reset } = useForm();
-    const {user} = useAuth();
-   
+    const { user } = useAuth();
+
     const onSubmit = async (data) => {
-        // Create a new task object with categories array
+        // Create a new task object without the 'status' field
         const newTask = {
             email: user.email, // Replace with dynamic user email if needed
             title: data.title,
             description: data.description || "",
-            status: data.status || "pending",
             category: data.category, // The selected category
             timestamp: new Date().toISOString(),
             image: null, // No image anymore
@@ -31,7 +30,6 @@ const AddTask = () => {
             toast.error("Failed to add task. Please try again later.");
         }
     };
-
 
     return (
         <div className="w-fit border-2 mx-auto p-4 bg-background shadow-md rounded-lg">
