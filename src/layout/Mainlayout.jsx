@@ -22,9 +22,11 @@ const MainLayout = () => {
                 <Outlet></Outlet>
             </div>
             <ScrollProgress/>
-            <footer>
-                <Footer></Footer>
-            </footer>
+           
+                <section>
+                    <Footer/>
+                </section>
+           
           
         </div>
     );
