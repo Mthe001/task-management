@@ -1,32 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios"; // For sending the task data to a server
+import toast from "react-hot-toast";
 
-const AddTask = ({ onAdd }) => {
+const AddTask = () => {
     const { register, handleSubmit, reset } = useForm();
-    const [image, setImage] = useState(null);
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            // If there's an image, we can store the file or create a URL for it
-            setImage(URL.createObjectURL(file)); // For showing image preview
-        } else {
-            setImage(null); // Clear image if the user removes it
-        }
-    };
-
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
+        // Create a new task object with the required fields
         const newTask = {
-            id: Date.now(), // Unique ID
+            email: "user@example.com", // Replace with dynamic user email if necessary
             title: data.title,
             description: data.description || "",
-            category: data.category,
+            status: data.status || "pending",
+            category: data.category, // Ensure category is passed from the form
             timestamp: new Date().toISOString(),
-            image, // Include image URL or null if no image is added
+            image: null, // No image anymore
         };
-        onAdd(newTask);
-        reset();
-        setImage(null); // Reset image preview
+
+        try {
+            const response = await axios.post("http://localhost:5000/tasks", newTask);
+            console.log("Task added successfully:", response.data);
+            toast.success("Task added successfully!");
+            reset(); // Reset the form after successful submission
+        } catch (error) {
+            console.error("Error adding task:", error);
+            console.error("Error details:", error.response?.data); // Inspect error details from the server
+            toast.error("Failed to add task. Please try again later.");
+        }
     };
 
     return (
@@ -59,18 +60,6 @@ const AddTask = ({ onAdd }) => {
                     <option value="In Progress">In Progress</option>
                     <option value="Done">Done</option>
                 </select>
-
-                {/* Optional Image Upload */}
-                <div className="mb-4">
-                    <label className="block text-lg font-medium">Task Image (Optional)</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="w-full text-sm text-gray-600 mx-1 "
-                    />
-                    {image && <img src={image} alt="Preview" className="mt-2 max-w-full h-48 object-cover rounded" />}
-                </div>
 
                 {/* Submit Button */}
                 <button
