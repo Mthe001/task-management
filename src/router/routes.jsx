@@ -9,6 +9,8 @@ import AddTask from "@/components/addTask/AddTask";
 import Register from "@/pages/Register/Register";
 import Profile from "@/pages/ProfilePage/UserProfile";
 import Settings from "@/pages/ProfilePage/Settings";
+import ManageTask from "@/components/manageTask/ManageTask";
+import EditTask from "@/components/manageTask/EditTask";
 
 
 
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
                 path:'/add-task',
                 element:<PrivateRoute><AddTask/></PrivateRoute>,
             },
+            {
+                path:'/tasks/:id',
+                element:<PrivateRoute><EditTask/></PrivateRoute>
+            },
+            {
+                path:'/manage-task',
+                element:<PrivateRoute><ManageTask/></PrivateRoute>,
+            }
              
            
 
