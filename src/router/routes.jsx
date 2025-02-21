@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import AddTask from "@/components/addTask/AddTask";
 import Register from "@/pages/Register/Register";
 import Profile from "@/pages/ProfilePage/UserProfile";
+import Settings from "@/pages/ProfilePage/Settings";
 
 
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path:'/profile',
                 element:<PrivateRoute><Profile/></PrivateRoute>,
+            },
+            {
+                path:'/settings',
+                element:<PrivateRoute><Settings/></PrivateRoute>,
             },
             {
                 path:'/add-task',
