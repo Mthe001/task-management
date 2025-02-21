@@ -2,18 +2,20 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios"; // For sending the task data to a server
 import toast from "react-hot-toast";
+import useAuth from "@/hooks/useAuth";
 
 const AddTask = () => {
     const { register, handleSubmit, reset } = useForm();
-
+    const {user} = useAuth();
+   
     const onSubmit = async (data) => {
-        // Create a new task object with the required fields
+        // Create a new task object with categories array
         const newTask = {
-            email: "user@example.com", // Replace with dynamic user email if necessary
+            email: user.email, // Replace with dynamic user email if needed
             title: data.title,
             description: data.description || "",
             status: data.status || "pending",
-            category: data.category, // Ensure category is passed from the form
+            category: data.category, // The selected category
             timestamp: new Date().toISOString(),
             image: null, // No image anymore
         };
@@ -29,6 +31,7 @@ const AddTask = () => {
             toast.error("Failed to add task. Please try again later.");
         }
     };
+
 
     return (
         <div className="w-fit border-2 mx-auto p-4 bg-background shadow-md rounded-lg">
