@@ -4,15 +4,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ModeToggle } from "@/components/mode-toggle";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import { AuthContext } from "@/Provider/AuthProvider";
+import { Plus } from "lucide-react";
+import { ListChecks } from "lucide-react";
 
-// Sections for navigation links
+// // Sections for navigation links
+// const sections = [
+//     { name: "Home", id: "home", path: "/" },
+//     { name: "Add Task", id: "add_task", path: "/add-task" },
+//     { name: "Manage Task", id: "manage_task", path: "/manage-task" },
+   
+// ];
+
 const sections = [
     { name: "Home", id: "home", path: "/" },
-    { name: "About", id: "about", path: "/about" },
-    { name: "Skills", id: "skills", path: "/skills" },
-    { name: "Projects", id: "projects", path: "/projects" },
-    { name: "Contact", id: "contact", path: "/contact" },
+    { name: "Add Task", id: "add_task", path: "/add-task", icon: <Plus className="w-5 h-5 mr-1" /> },
+    { name: "Manage Task", id: "manage_task", path: "/manage-task", icon: <ListChecks className="w-5 h-5 mr-1" /> },
 ];
+
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -72,12 +80,15 @@ const Navbar = () => {
                             key={section.id}
                             to={section.path}
                             className={({ isActive }) =>
-                                `cursor-pointer text-lg font-medium transition-colors duration-300 ${isActive ? "text-primary border-b-2 border-primary" : "text-foreground"}`
+                                `cursor-pointer text-md font-semibold flex items-center transition-colors duration-300 ${isActive ? "text-primary border-b-2 border-primary" : "text-foreground"
+                                }`
                             }
                         >
+                            {section.icon} {/* Render the icon */}
                             {section.name}
                         </NavLink>
                     ))}
+
                 </div>
 
                 {/* Dark Mode Toggle & User Profile / Login/Register Icons */}
@@ -150,18 +161,6 @@ const Navbar = () => {
                             </>
                         )}
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
