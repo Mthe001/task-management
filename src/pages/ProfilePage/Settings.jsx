@@ -79,7 +79,7 @@ const Settings = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-background py-8">
-            <div className="bg-background border-2 p-8 rounded-lg shadow-lg w-full max-w-md">
+            <div className="bg-background border-2 p-8 rounded-lg shadow-lg  w-[90%] lg:max-w-md">
                 <h2 className="text-3xl text-purple-700 font-semibold text-center mb-6">Update Profile</h2>
                 {error && <div className="text-red-500 mb-4">{error}</div>}
                 <form onSubmit={handleSubmit}>
@@ -113,7 +113,11 @@ const Settings = () => {
                         <MapContainer
                             center={[51.505, -0.09]} // Default map center
                             zoom={13}
-                            style={{ height: '200px', width: '100%' }}
+                            style={{
+                                height: '200px',
+                                width: '100%',
+                                marginTop: '60px',
+                            }}
                         >
                             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                             <LocationPicker setLocation={setLocation} />
