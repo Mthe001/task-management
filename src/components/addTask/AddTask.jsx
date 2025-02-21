@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios"; // For sending the task data to a server
 import toast from "react-hot-toast";
 import useAuth from "@/hooks/useAuth";
+import { Helmet } from "react-helmet-async";
 
 const AddTask = () => {
     const { register, handleSubmit, reset } = useForm();
@@ -32,45 +33,55 @@ const AddTask = () => {
     };
 
     return (
-        <div className="w-fit border-2 mx-auto p-4 bg-background shadow-md rounded-lg">
-            <h2 className="text-xl font-bold mb-4 text-start">Add Task</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                {/* Task Title */}
-                <input
-                    type="text"
-                    {...register("title", { required: true, maxLength: 50 })}
-                    placeholder="Task Title"
-                    className="w-full p-2 border rounded bg-inherit"
-                    required
-                />
 
-                {/* Task Description */}
-                <textarea
-                    {...register("description", { maxLength: 200 })}
-                    placeholder="Task Description (Optional)"
-                    className="w-full p-2 border rounded bg-inherit"
-                />
+        <div>
+            <div>
+                <Helmet>
+                    <title>Add task | Task24/7 </title>
+                </Helmet>
+            </div>
 
-                {/* Task Category */}
-                <select
-                    {...register("category", { required: true })}
-                    className="w-full p-2 border bg-background rounded"
-                    required
-                >
-                    <option value="To-Do">To-Do</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Done">Done</option>
-                </select>
+            <div className="w-fit border-2 mx-auto p-4 bg-background shadow-md rounded-lg">
+                <h2 className="text-xl font-bold mb-4 text-start">Add Task</h2>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    {/* Task Title */}
+                    <input
+                        type="text"
+                        {...register("title", { required: true, maxLength: 50 })}
+                        placeholder="Task Title"
+                        className="w-full p-2 border rounded bg-inherit"
+                        required
+                    />
 
-                {/* Submit Button */}
-                <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                >
-                    Add Task
-                </button>
-            </form>
+                    {/* Task Description */}
+                    <textarea
+                        {...register("description", { maxLength: 200 })}
+                        placeholder="Task Description (Optional)"
+                        className="w-full p-2 border rounded bg-inherit"
+                    />
+
+                    {/* Task Category */}
+                    <select
+                        {...register("category", { required: true })}
+                        className="w-full p-2 border bg-background rounded"
+                        required
+                    >
+                        <option value="To-Do">To-Do</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Done">Done</option>
+                    </select>
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+                    >
+                        Add Task
+                    </button>
+                </form>
+            </div>
         </div>
+
     );
 };
 

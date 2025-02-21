@@ -19,15 +19,16 @@ const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <HelmetProvider>
+    <HelmetProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+
           <ThemeProvider defaultTheme='light'>
             <RouterProvider router={router}></RouterProvider>
             <Toaster position='top-right' />
           </ThemeProvider>
-        </HelmetProvider>
-      </QueryClientProvider>
-    </AuthProvider>
+        </QueryClientProvider>
+      </AuthProvider>
+    </HelmetProvider>
   </StrictMode>,
 )

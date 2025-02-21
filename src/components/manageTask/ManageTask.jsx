@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'; // Import Link component
 import Swal from 'sweetalert2';
+import { Helmet } from 'react-helmet-async';
 
 const ManageTask = () => {
     const [taskList, setTaskList] = useState([]);  // Default to an empty array
@@ -68,37 +69,47 @@ const ManageTask = () => {
     }
 
     return (
-        <div className="task-manager lg:w-7/12 w-[90%] border-2 rounded-lg mx-auto p-4">
-            <h2 className="text-xl text-purple-700 font-bold mb-6 text-center">Manage Tasks</h2>
 
-            <div className="task-list">
-                {taskList.length === 0 ? (
-                    <div>No tasks available</div>
-                ) : (
-                    taskList.map((task) => (
-                        <div key={task._id} className="task-card p-4 border mb-4">
-                            <h3 className="font-semibold">{task.title}</h3>
-                            <p>{task.description}</p>
-                            <div className="task-actions">
-                                {/* Use Link to go to the Edit page for this task */}
-                                <Link
-                                    to={`/tasks/${task._id}`}
-                                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
-                                >
-                                    Edit
-                                </Link>
-                                <button
-                                    className="bg-red-500 text-white px-3 py-1 rounded"
-                                    onClick={() => handleDelete(task._id)}
-                                >
-                                    Delete
-                                </button>
+        <div>
+            <div>
+                <Helmet>
+                    <title>Manage task | Task24/7 </title>
+                </Helmet>
+            </div>
+            <div className="task-manager lg:w-7/12 w-[90%] border-2 rounded-lg mx-auto p-4">
+                <h2 className="text-xl text-purple-700 font-bold mb-6 text-center">Manage Tasks</h2>
+
+                <div className="task-list">
+                    {taskList.length === 0 ? (
+                        <div>No tasks available</div>
+                    ) : (
+                        taskList.map((task) => (
+                            <div key={task._id} className="task-card p-4 border mb-4">
+                                <h3 className="font-semibold">{task.title}</h3>
+                                <p>{task.description}</p>
+                                <div className="task-actions">
+                                    {/* Use Link to go to the Edit page for this task */}
+                                    <Link
+                                        to={`/tasks/${task._id}`}
+                                        className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
+                                    >
+                                        Edit
+                                    </Link>
+                                    <button
+                                        className="bg-red-500 text-white px-3 py-1 rounded"
+                                        onClick={() => handleDelete(task._id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    ))
-                )}
+                        ))
+                    )}
+                </div>
             </div>
         </div>
+
+
     );
 };
 
