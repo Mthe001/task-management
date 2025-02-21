@@ -1,27 +1,26 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getAuth } from "firebase/auth";
+import { Link } from "react-router-dom";
 
 const GEOCODING_API_KEY = import.meta.env.VITE_GEOCODING_API_KEY;
 const GEOCODING_API_URL = `https://api.opencagedata.com/geocode/v1/json?key=${GEOCODING_API_KEY}&q=`;
 
-// Function to get location string from lat and lng
 const getLocationString = async (lat, lng) => {
     try {
         const response = await axios.get(`${GEOCODING_API_URL}${lat},${lng}`);
-        const location = response.data.results[0]?.formatted || "Address not found";
-        return location; // Return the formatted address
+        return response.data.results[0]?.formatted || "Address not found";
     } catch (error) {
         console.error("Error fetching location:", error);
-        return "Failed to fetch address"; // Return a default error message
+        return "Failed to fetch address";
     }
 };
 
 const Profile = () => {
-    const [user, setUser] = useState(null); // To store user profile data
-    const [loading, setLoading] = useState(true); // For loading state
-    const [error, setError] = useState(null); // For error state
-    const [locationString, setLocationString] = useState(""); // For storing location as a string
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [locationString, setLocationString] = useState("");
 
     const auth = getAuth();
     const currentUser = auth.currentUser;
@@ -34,17 +33,13 @@ const Profile = () => {
                 return;
             }
 
-            const email = currentUser.email; // Get the email of the logged-in user
-
             try {
-                const response = await axios.get(`http://localhost:5000/users/${email}`);
+                const response = await axios.get(`http://localhost:5000/users/${currentUser.email}`);
                 setUser(response.data.user);
 
-                // If user has location (lat, lng), fetch the location string
                 if (response.data.user.location) {
                     const { lat, lng } = response.data.user.location;
-                    const location = await getLocationString(lat, lng); // Fetch location string
-                    setLocationString(location); // Store the address string
+                    setLocationString(await getLocationString(lat, lng));
                 }
             } catch (error) {
                 console.error("Error fetching user profile:", error);
@@ -70,31 +65,41 @@ const Profile = () => {
     }
 
     return (
-        <div className="lg:w-fit  w-[90%] mx-auto mt-10 p-8 bg-background border-2 shadow-lg rounded-lg">
+        <div className="lg:w-fit w-[90%] mx-auto mt-10 p-8 bg-background border-2 shadow-lg rounded-lg relative">
             <div className="flex justify-center mb-6">
                 <img
                     src={user?.image || "/path/to/default-avatar.jpg"}
                     alt="User Profile"
-                    className="w-32 h-32 rounded-full border-4 border-blue-500"
+                    className="w-32 h-32 rounded-full border-4 border-purple-900"
                 />
             </div>
 
-            <h2 className=" text-3xl font-semibold text-blue-600 mb-4">
-                {user?.name || "No Name Provided"}
+            <h2 className="lg:text-3xl text-xl font-semibold text-purple-600 mb-4">
+                <span>Welcome Back!</span> {user?.name || "No Name Provided"}
             </h2>
 
             <div className="text-center mb-4">
-                <p className="text-lg text-gray-700 text-start"> <span className="text-purple-600">User Email :</span> {user?.email || "No Email Provided"}</p>
-                {/* Display location string */}
-                <p className="text-lg text-gray-700">
+                <p className="text-lg text-gray-700 text-start">
+                    <span className="text-purple-600">User Email :</span> {user?.email || "No Email Provided"}
+                </p>
+                <p className="text-lg text-start text-gray-700">
                     <span className="text-purple-600">Location :</span> {locationString || "No Location Provided"}
                 </p>
             </div>
 
             <div className="bg-purple-500 p-4 text-white rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold  mb-2">About Me</h3>
-                {/* Display description */}
-                <p className=" font-semibold">{user?.description || "No Description Available"}</p>
+                <h3 className="text-xl font-semibold mb-2">About Me</h3>
+                <p className="font-semibold">{user?.description || "No Description Available"}</p>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex justify-between mt-6">
+                
+                <Link to="/" className="bg-background border-2 hover:border-blue-700 px-4 py-2 rounded-lg shadow-md" > 
+                 Back
+                </Link>
+                
+                <Link className="bg-background border-2  hover:border-blue-700 px-4 py-2 rounded-lg shadow-md" to="/settings">Update Profile</Link>
             </div>
         </div>
     );

@@ -4,6 +4,7 @@ import useAuth from "@/hooks/useAuth"; // Assuming you have a custom hook for au
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 
 // Custom component to capture click events on the map
@@ -64,7 +65,7 @@ const Settings = () => {
         }
     };
 
-    // Image upload function (similar to what we discussed earlier)
+    // Image upload function
     const imageUpload = async (imageData) => {
         const formData = new FormData();
         formData.append("file", imageData);
@@ -80,6 +81,7 @@ const Settings = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-background py-8">
             <div className="bg-background border-2 p-8 rounded-lg shadow-lg  w-[90%] lg:max-w-md">
+                <Link to="/profile" className="border-2 px-4 py-1 rounded-md">Back</Link>
                 <h2 className="text-3xl text-purple-700 font-semibold text-center mb-6">Update Profile</h2>
                 {error && <div className="text-red-500 mb-4">{error}</div>}
                 <form onSubmit={handleSubmit}>
