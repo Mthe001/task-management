@@ -47,6 +47,8 @@ Here’s a preview of how the Task24/7 application looks:
 
 ![Add Task Page](./public/images/image.png)
 
+![Manage task Page](./public/images/Screenshot%202025-02-22%20191915.png)
+
 ---
 
 ### 👤 About Me
