@@ -19,7 +19,7 @@ Welcome to **Task24/7**, a powerful and intuitive task management web applicatio
 
 Try out the app in action! Visit the live version here:
 
-**[Live Demo](https://task-management-server-ky30xs329-md-redwanul-haques-projects.vercel.app)**
+**[Live Project](https://task-manager-240.web.app)**
 
 ---
 
@@ -44,6 +44,7 @@ Try out the app in action! Visit the live version here:
 ## 🎨 Screenshots
 
 Here’s a preview of how the Task24/7 application looks:
+
 
 ![Add Task Page](./public/images/image.png)
 
