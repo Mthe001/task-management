@@ -25,7 +25,7 @@ const App = () => {
     const fetchTasks = async () => {
         try {
             if (!email) {
-                throw new Error("No email found for the user.");
+                throw new Error("Please log in to see / save your task.");
             }
 
             const response = await axios.get(`https://task-management-server-self-iota.vercel.app/tasks/${email}`);
