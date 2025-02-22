@@ -16,49 +16,52 @@ const EditTask = () => {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+   
+   
     useEffect(() => {
         const fetchTask = async () => {
+            console.log("Fetching task with ID:", id);
             try {
                 const response = await axios.get(`http://localhost:5000/tasks/${id}`);
-                if (response.data) {
-                    setTask(response.data);
+                if (response.data && response.data.task) {  // Adjust if the response is an object
+                    setTask(response.data.task);
                     setLoading(false);
                 } else {
                     setError('Task not found');
                     setLoading(false);
                 }
             } catch (err) {
-                setError('Failed to fetch task');
+                console.error("Error fetching task:", err);
+                setError('Update Your Task');
                 setLoading(false);
             }
         };
 
+
         fetchTask();
+        
     }, [id]);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.put(`http://localhost:5000/tasks/${id}`, task);
+            console.log("Update Response:", response); // Debugging
+
             if (response.status === 200) {
-                // Show success alert
                 Swal.fire({
                     icon: 'success',
                     title: 'Task updated successfully!',
                     showConfirmButton: false,
                     timer: 1500,
                 });
-                navigate(`/tasks/${id}`);
+                navigate('/');  // Redirect after update
             } else {
-                setError('Failed to update task');
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong while updating the task.',
-                });
+                throw new Error('Failed to update task');
             }
         } catch (err) {
+            console.error("Error updating task:", err); // Log error
             setError('Failed to update task');
             Swal.fire({
                 icon: 'error',
@@ -68,6 +71,7 @@ const EditTask = () => {
         }
     };
 
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -75,7 +79,7 @@ const EditTask = () => {
     return (
         <div className="max-w-4xl mx-auto p-6 bg-background border-2 w-[92%] my-10 shadow-md rounded-md">
             <h2 className="text-2xl font-semibold text-center text-purple-600 mb-6">Edit Task</h2>
-            {error && <p className="text-red-600 text-center mb-4">{error}</p>}
+            {error && <p className="text-green-600 text-center mb-4">{error}</p>}
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="flex flex-col">
                     <label className="text-lg text-gray-600 mb-2">Title:</label>

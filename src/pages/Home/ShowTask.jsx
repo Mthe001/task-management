@@ -1,121 +1,94 @@
 import React, { useState } from "react";
-import { DndContext, DragOverlay } from "@dnd-kit/core";
+import { DndContext } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import TaskColumn from "./TaskColumn"; // Column component
-import SortableTaskItem from "./SortableTaskItem"; // Task item component
-import { Helmet } from "react-helmet-async";
+import TaskColumn from "./TaskColumn"; // Import TaskColumn
+import axios from "axios"; // For API call
 
 const ShowTask = ({ tasks = [] }) => {
-    const [taskList, setTaskList] = useState(tasks);
-    const [activeTask, setActiveTask] = useState(null);
+  const [taskList, setTaskList] = useState(tasks);
 
-    // Filter tasks based on their categories
-    const toDoTasks = taskList.filter((task) =>
-        task.categories.some((category) => category.name === "To-Do" && category.active)
-    );
-    const inProgressTasks = taskList.filter((task) =>
-        task.categories.some((category) => category.name === "In Progress" && category.active)
-    );
-    const doneTasks = taskList.filter((task) =>
-        task.categories.some((category) => category.name === "Done" && category.active)
-    );
+  // Handle reordering the tasks within a category
+  const handleTaskReorder = async (draggedId, overId) => {
+    const draggedTaskIndex = taskList.findIndex((task) => task._id === draggedId);
+    const overTaskIndex = taskList.findIndex((task) => task._id === overId);
+    
+    const updatedTasks = [...taskList];
+    // Move the dragged task to its new position
+    const [draggedTask] = updatedTasks.splice(draggedTaskIndex, 1);
+    updatedTasks.splice(overTaskIndex, 0, draggedTask);
 
-    // Update the task category when a task is dropped into a new category
-    const handleTaskCategoryUpdate = (taskId, newCategory) => {
-        const updatedTasks = taskList.map((task) =>
-            task._id === taskId
-                ? {
-                    ...task,
-                    categories: task.categories.map((category) =>
-                        category.name === newCategory
-                            ? { ...category, active: true }
-                            : { ...category, active: false }
-                    ),
-                }
-                : task
-        );
-        setTaskList(updatedTasks); // Update the local state with the new task list
+    setTaskList(updatedTasks);
 
-        // Optionally, send the updated task list to the backend to persist the changes
-        // You can use a fetch/axios call here to update the task in the backend.
-    };
+    // Now, send the new task order to the server
+    const taskIdsInOrder = updatedTasks.map((task) => task._id);
 
-    const handleDragStart = (event) => {
-        const { active } = event;
-        setActiveTask(taskList.find((task) => task._id === active.id));
-    };
+    try {
+      await axios.post("http://localhost:5000/tasks/reorder", { taskIds: taskIdsInOrder });
+      console.log("Task order updated successfully in the backend");
+    } catch (error) {
+      console.error("Error updating task order in the backend:", error);
+      // Optionally, revert the order if the request fails
+      setTaskList(tasks);
+    }
+  };
 
-    const handleDragEnd = (event) => {
-        const { active, over } = event;
-        if (!over) return; // Prevent errors if dropped outside a valid area
+  // Handle updating the task category when moved to a different category
+  const handleTaskCategoryUpdate = (taskId, newCategory) => {
+    const updatedTasks = taskList.map((task) => {
+      if (task._id === taskId) {
+        return {
+          ...task,
+          categories: task.categories.map((category) =>
+            category.name === newCategory ? { ...category, active: true } : { ...category, active: false }
+          ),
+        };
+      }
+      return task;
+    });
 
-        const activeId = active.id;
-        const overId = over.id;
+    setTaskList(updatedTasks);
+  };
 
-        // Find the dragged task
-        const draggedTask = taskList.find((task) => task._id === activeId);
-        if (!draggedTask) return;
+  return (
+    <div className="p-4 border rounded-lg bg-background flex flex-col">
+      <h2 className="text-xl text-purple-700 font-bold mb-6 text-center">Task Board</h2>
 
-        // Get the category the task is dropped into
-        const overCategory = overId.startsWith("category-") ? overId.replace("category-", "") : null;
+      <DndContext onDragEnd={handleTaskReorder}>
+        {/* Wrap the task columns in SortableContext */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 my-3 py-4 flex-grow">
+          {/* To-Do Column */}
+          <SortableContext items={taskList.map((task) => task._id)} strategy={verticalListSortingStrategy}>
+            <TaskColumn
+              category="To-Do"
+              tasks={taskList}
+              onTaskCategoryUpdate={handleTaskCategoryUpdate}
+              onTaskReorder={handleTaskReorder}
+            />
+          </SortableContext>
 
-        if (overCategory) {
-            // Update categories if moving the task to a new category
-            const updatedTasks = taskList.map((task) =>
-                task._id === activeId
-                    ? {
-                        ...task,
-                        categories: task.categories.map((category) =>
-                            category.name === overCategory
-                                ? { ...category, active: true } // Set the dropped category to active
-                                : { ...category, active: false } // Reset other categories to inactive
-                        )
-                    }
-                    : task
-            );
+          {/* In Progress Column */}
+          <SortableContext items={taskList.map((task) => task._id)} strategy={verticalListSortingStrategy}>
+            <TaskColumn
+              category="In Progress"
+              tasks={taskList}
+              onTaskCategoryUpdate={handleTaskCategoryUpdate}
+              onTaskReorder={handleTaskReorder}
+            />
+          </SortableContext>
 
-            setTaskList(updatedTasks); // Update the task list with new categories
-
-            // Optionally, make an API call to update task's category in the backend
-        }
-
-        setActiveTask(null); // Reset active task after the drag
-    };
-
-    return (
-        <div className="p-4 border rounded-lg bg-background flex flex-col">
-            <h2 className="text-xl text-purple-700 font-bold mb-6 text-center">Task Board</h2>
-
-            <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 my-3 py-4 flex-grow">
-                    {/* To-Do Column */}
-                    <TaskColumn
-                        category="To-Do"
-                        tasks={toDoTasks}
-                        onTaskCategoryUpdate={handleTaskCategoryUpdate}
-                    />
-
-                    {/* In Progress Column */}
-                    <TaskColumn
-                        category="In Progress"
-                        tasks={inProgressTasks}
-                        onTaskCategoryUpdate={handleTaskCategoryUpdate}
-                    />
-
-                    {/* Done Column */}
-                    <TaskColumn
-                        category="Done"
-                        tasks={doneTasks}
-                        onTaskCategoryUpdate={handleTaskCategoryUpdate}
-                    />
-                </div>
-
-                <DragOverlay>
-                    {activeTask ? <SortableTaskItem task={activeTask} /> : null}
-                </DragOverlay>
-            </DndContext>
+          {/* Done Column */}
+          <SortableContext items={taskList.map((task) => task._id)} strategy={verticalListSortingStrategy}>
+            <TaskColumn
+              category="Done"
+              tasks={taskList}
+              onTaskCategoryUpdate={handleTaskCategoryUpdate}
+              onTaskReorder={handleTaskReorder}
+            />
+          </SortableContext>
         </div>
-    );
+      </DndContext>
+    </div>
+  );
 };
 
 export default ShowTask;
