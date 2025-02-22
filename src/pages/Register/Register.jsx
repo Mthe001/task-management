@@ -89,12 +89,12 @@ const SignUp = () => {
             </Helmet>
             <div className="max-w-4xl w-[90%] bg-background border-2 shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden">
                 {/* Left Section: Image/Illustration */}
-                <div className="md:w-1/2 p-2 flex items-center justify-center  ">
+                <div className="md:w-1/2 p-2 flex items-center justify-center ">
                     <Lottie animationData={register} loop={true}></Lottie>
                 </div>
 
                 {/* Right Section: Form */}
-                <div className="md:w-1/2 p-8">
+                <div className="md:w-1/2 p-8 border-2 m-1 rounded-md">
                     <h2 className="text-2xl font-bold text-gray-800 mb-6">Register</h2>
                     <form onSubmit={handleSubmit}>
                         {/* Name Field */}
