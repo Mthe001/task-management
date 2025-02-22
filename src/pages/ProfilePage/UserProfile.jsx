@@ -80,7 +80,7 @@ const Profile = () => {
 
             <div className="text-center mb-4">
                 <p className="text-lg text-gray-700 text-start">
-                    <span className="text-purple-600">User Email :</span> {user?.email || "No Email Provided"}
+                    <span className="text-purple-600">Your Email :</span> {user?.email || "No Email Provided"}
                 </p>
                 <p className="text-lg text-start text-gray-700">
                     <span className="text-purple-600">Location :</span> {locationString || "No Location Provided"}
