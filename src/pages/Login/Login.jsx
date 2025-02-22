@@ -57,14 +57,14 @@ const Login = () => {
             </Helmet>
 
             <div className="my-20 flex items-center justify-center">
-                <div className="max-w-4xl w-full bg-background border-2 p-6 shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden">
+                <div className="max-w-4xl w-[90%] bg-background border-2 p-6 shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden">
                     {/* Left Section: Image/Illustration */}
                     <div className="md:w-1/2 p-6 flex items-center justify-center ">
                         <Lottie animationData={loginAnim} loop={true} style={{ filter: "hue-rotate(45deg)" }} />
                     </div>
 
                     {/* Right Section: Form */}
-                    <div className="md:w-1/2 p-8">
+                    <div className="md:w-1/2 p-8 border-2 rounded-md" >
                         <h2 className="text-2xl font-bold text-gray-800 mb-6">Login</h2>
                         <form onSubmit={handleSubmit}>
                             {/* Email Field */}
