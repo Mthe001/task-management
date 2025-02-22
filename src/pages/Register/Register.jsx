@@ -87,9 +87,9 @@ const SignUp = () => {
             <Helmet>
                 <title>Register || News 240</title>
             </Helmet>
-            <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden">
+            <div className="max-w-4xl w-full bg-background border-2 shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden">
                 {/* Left Section: Image/Illustration */}
-                <div className="md:w-1/2 p-2 flex items-center justify-center bg-gray-50">
+                <div className="md:w-1/2 p-2 flex items-center justify-center  ">
                     <Lottie animationData={register} loop={true}></Lottie>
                 </div>
 

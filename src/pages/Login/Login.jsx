@@ -57,9 +57,9 @@ const Login = () => {
             </Helmet>
 
             <div className="my-20 flex items-center justify-center">
-                <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden">
+                <div className="max-w-4xl w-full bg-background border-2 p-6 shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden">
                     {/* Left Section: Image/Illustration */}
-                    <div className="md:w-1/2 p-6 flex items-center justify-center bg-gray-50">
+                    <div className="md:w-1/2 p-6 flex items-center justify-center ">
                         <Lottie animationData={loginAnim} loop={true} style={{ filter: "hue-rotate(45deg)" }} />
                     </div>
 
