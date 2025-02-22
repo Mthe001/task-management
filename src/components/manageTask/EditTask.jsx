@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Loader from '@/shared/LoaderSpinner';
+
 
 const EditTask = () => {
     const { id } = useParams();
@@ -22,7 +24,7 @@ const EditTask = () => {
         const fetchTask = async () => {
             console.log("Fetching task with ID:", id);
             try {
-                const response = await axios.get(`http://localhost:5000/tasks/${id}`);
+                const response = await axios.get(`https://task-management-server-self-iota.vercel.app/tasks/${id}`);
                 if (response.data && response.data.task) {  // Adjust if the response is an object
                     setTask(response.data.task);
                     setLoading(false);
@@ -46,7 +48,7 @@ const EditTask = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:5000/tasks/${id}`, task);
+            const response = await axios.put(`https://task-management-server-self-iota.vercel.app/tasks/${id}`, task);
             console.log("Update Response:", response); // Debugging
 
             if (response.status === 200) {
@@ -73,7 +75,7 @@ const EditTask = () => {
 
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className='flex justify-center items-center min-h-screen'><Loader/></div>;
     }
 
     return (

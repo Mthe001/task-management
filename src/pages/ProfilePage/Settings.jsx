@@ -49,7 +49,7 @@ const Settings = () => {
                 image,
             };
             // Make PUT request to update user info
-            const response = await axios.put("http://localhost:5000/users", updatedUser);
+            const response = await axios.put("https://task-management-server-self-iota.vercel.app/users", updatedUser);
             console.log("User updated:", response.data);
 
             // Show success toast

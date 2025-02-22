@@ -1,27 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios"; // For sending the task data to a server
+import axios from "axios";
 import toast from "react-hot-toast";
 import useAuth from "@/hooks/useAuth";
 import { Helmet } from "react-helmet-async";
+import Loader from "@/shared/LoaderSpinner";
 
 const AddTask = () => {
     const { register, handleSubmit, reset } = useForm();
     const { user } = useAuth();
 
+    // State to track loading status for form
+    const [loading, setLoading] = useState(true); // Initially true to show loading before the form appears
+    const [taskLoading, setTaskLoading] = useState(false); // For task submission loading
+
+    // Simulate loading of some data or prepare the form
+    useEffect(() => {
+        // Simulating loading delay (e.g., for data fetching)
+        setTimeout(() => {
+            setLoading(false); 
+        }, 1000);
+    }, []);
+
     const onSubmit = async (data) => {
-        // Create a new task object without the 'status' field
+        setTaskLoading(true); // Show loader during task submission
+
         const newTask = {
-            email: user.email, // Replace with dynamic user email if needed
+            email: user.email,
             title: data.title,
             description: data.description || "",
-            category: data.category, // The selected category
+            category: data.category,
             timestamp: new Date().toISOString(),
-            image: null, // No image anymore
+            image: null,
         };
 
         try {
-            const response = await axios.post("http://localhost:5000/tasks", newTask);
+            const response = await axios.post("https://task-management-server-self-iota.vercel.app/tasks", newTask);
             console.log("Task added successfully:", response.data);
             toast.success("Task added successfully!");
             reset(); // Reset the form after successful submission
@@ -29,20 +43,36 @@ const AddTask = () => {
             console.error("Error adding task:", error);
             console.error("Error details:", error.response?.data); // Inspect error details from the server
             toast.error("Failed to add task. Please try again later.");
+        } finally {
+            setTaskLoading(false); // Hide loader once the task submission is done
         }
     };
 
-    return (
-
-        <div>
-            <div>
-                <Helmet>
-                    <title>Add task | Task24/7 </title>
-                </Helmet>
+    if (loading) {
+        // Return a loader before the form appears
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div><Loader/></div>
             </div>
+        );
+    }
+
+    return (
+        <div>
+            <Helmet>
+                <title>Add task | Task24/7 </title>
+            </Helmet>
 
             <div className="w-fit border-2 mx-auto p-4 bg-background shadow-md rounded-lg">
                 <h2 className="text-xl font-bold mb-4 text-start">Add Task</h2>
+
+                {/* Show loader when task is being added */}
+                {taskLoading && (
+                    <div className="flex justify-center items-center mb-4">
+                        <div className="spinner-border animate-spin h-8 w-8 border-t-4 border-blue-600 rounded-full"></div>
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     {/* Task Title */}
                     <input
@@ -81,7 +111,6 @@ const AddTask = () => {
                 </form>
             </div>
         </div>
-
     );
 };
 

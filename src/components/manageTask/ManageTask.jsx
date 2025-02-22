@@ -17,7 +17,7 @@
 //     const fetchTasks = async () => {
 //         setLoading(true);
 //         try {
-//             const response = await axios.get('http://localhost:5000/tasks'); // Update with the correct port
+//             const response = await axios.get('https://task-management-server-self-iota.vercel.app/tasks'); // Update with the correct port
 //             console.log(response.data); // Check if it's returning the correct JSON data
 //             if (Array.isArray(response.data.tasks)) {
 //                 setTaskList(response.data.tasks);
@@ -44,7 +44,7 @@
 //             if (result.isConfirmed) {
 //                 try {
 //                     // Ensure you're sending the request to the correct backend port
-//                     const response = await axios.delete(`http://localhost:5000/tasks/${taskId}`); // Update port here
+//                     const response = await axios.delete(`https://task-management-server-self-iota.vercel.app/tasks/${taskId}`); // Update port here
 
 //                     if (response.status === 200) {
 //                         // Remove the task from the list in the local state
@@ -125,6 +125,7 @@ import { Link } from 'react-router-dom'; // Import Link component
 import Swal from 'sweetalert2';
 import { Helmet } from 'react-helmet-async';
 import useAuth from '@/hooks/useAuth';
+import Loader from '@/shared/LoaderSpinner';
 
 
 const ManageTask = () => {
@@ -144,7 +145,7 @@ const ManageTask = () => {
     const fetchTasks = async (userEmail) => {
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:5000/tasks/${userEmail}`);  // Update API endpoint to use the email
+            const response = await axios.get(`https://task-management-server-self-iota.vercel.app/tasks/${userEmail}`);  // Update API endpoint to use the email
             console.log(response.data);  // Check if it's returning the correct JSON data
             if (Array.isArray(response.data.tasks)) {
                 setTaskList(response.data.tasks);
@@ -170,7 +171,7 @@ const ManageTask = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await axios.delete(`http://localhost:5000/tasks/${taskId}`);
+                    const response = await axios.delete(`https://task-management-server-self-iota.vercel.app/tasks/${taskId}`);
                     if (response.status === 200) {
                         setTaskList((prevState) =>
                             prevState.filter((task) => task._id !== taskId)
@@ -189,7 +190,7 @@ const ManageTask = () => {
     };
 
     if (loading) {
-        return <div>Loading tasks...</div>;
+        return <div className='flex justify-center items-center min-h-screen'><Loader /></div>;
     }
 
     return (

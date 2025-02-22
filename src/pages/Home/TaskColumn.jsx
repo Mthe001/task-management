@@ -21,7 +21,7 @@ const TaskColumn = ({ category, tasks, onTaskCategoryUpdate }) => {
 
     // Define the handleTaskReorder function locally
     const handleTaskReorder = (updatedTaskList) => {
-        axios.post("http://localhost:5000/tasks/reorder", {
+        axios.post("https://task-management-server-self-iota.vercel.app/tasks/reorder", {
             taskIds: updatedTaskList.map((task) => task._id)  // Extract task ids from the updated task list
         })
             .then((response) => {

@@ -34,7 +34,7 @@ const Profile = () => {
             }
 
             try {
-                const response = await axios.get(`http://localhost:5000/users/${currentUser.email}`);
+                const response = await axios.get(`https://task-management-server-self-iota.vercel.app/users/${currentUser.email}`);
                 setUser(response.data.user);
 
                 if (response.data.user.location) {

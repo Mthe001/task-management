@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ShowTask from "./pages/Home/ShowTask";
 import useAuth from "./hooks/useAuth";
+import Loader from "./shared/LoaderSpinner";
 
 const App = () => {
     // Get the email directly from the authentication context or hook
@@ -27,7 +28,7 @@ const App = () => {
                 throw new Error("No email found for the user.");
             }
 
-            const response = await axios.get(`http://localhost:5000/tasks/${email}`);
+            const response = await axios.get(`https://task-management-server-self-iota.vercel.app/tasks/${email}`);
             setTasks(response.data.tasks);  // Assuming server returns tasks in { tasks: [...] } format
         } catch (err) {
             setError(err.message || "Failed to load tasks.");
@@ -42,7 +43,7 @@ const App = () => {
     }, [email]);  // Re-run the effect if the email changes
 
     // Handle loading and error states
-    if (loading) return <p>Loading tasks...</p>;
+    if (loading) return <Loader/>;
     if (error) return <p className="border-2 px-[90%] rounded-lg lg:px-96 py-44">{error}</p>;
     if (tasks.length === 0) return <p className="px-4 py-2">No tasks available.</p>;
 

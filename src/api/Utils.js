@@ -17,7 +17,7 @@ export const imageUpload = async (imageData) => {
 
 export const saveUser = async (user) => {
     try {
-        const response = await axios.post("http://localhost:5000/users", {
+        const response = await axios.post("https://task-management-server-self-iota.vercel.app/users", {
             email: user?.email,      // Email
             name: user?.displayName, // Name
             image: user?.photoURL,   // Image URL
@@ -33,7 +33,7 @@ export const saveUser = async (user) => {
 
 export const updateUser = async (user) => {
     try {
-        const response = await axios.put("http://localhost:5000/users", {
+        const response = await axios.put("https://task-management-server-self-iota.vercel.app/users", {
             email: user?.email,      // Email
             name: user?.displayName, // Name
             image: user?.photoURL,   // Image URL

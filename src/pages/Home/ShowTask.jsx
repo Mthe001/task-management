@@ -23,7 +23,7 @@ const ShowTask = ({ tasks = [] }) => {
     const taskIdsInOrder = updatedTasks.map((task) => task._id);
 
     try {
-      await axios.post("http://localhost:5000/tasks/reorder", { taskIds: taskIdsInOrder });
+      await axios.post("https://task-management-server-self-iota.vercel.app/tasks/reorder", { taskIds: taskIdsInOrder });
       console.log("Task order updated successfully in the backend");
     } catch (error) {
       console.error("Error updating task order in the backend:", error);
